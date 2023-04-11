@@ -22,18 +22,23 @@ def get_usernames(text):
 
 def get_followers(handle):
     """
-    Retrieve and print the followers of a given bsky.social handle using the "bsky" command-line tool.
-    The function prints the list of follower handles and the total number of followers.
+    Retrieve the followers of a given bsky.social handle using the "bsky" command-line tool.
+
+    This function runs the "bsky followers" command for the specified handle and extracts
+    the follower handles from the command's output. It returns a list of unique follower
+    handles.
 
     Args:
         handle (str): The bsky.social handle for which to retrieve followers.
+
+    Returns:
+        list[str]: A list of unique follower handles with the format "follower_handle.bsky.social".
     """
     result = subprocess.run(["bsky", "followers", "-H", handle], capture_output=True, text=True)
     followers_raw_text = result.stdout
     followers_handles = get_usernames(followers_raw_text)
-    print(followers_handles)
-    print(len(followers_handles))
     
+    return followers_handles
 
 def main():
     result = subprocess.run(["bsky", "tl"], capture_output=True, text=True)
